@@ -1,0 +1,8 @@
+opencv-python
+imutils
+scikit-learn
+Flask
+Paste
+numpy
+waitress
+scipy

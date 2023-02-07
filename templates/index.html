@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>WebCBIR</title>
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+  <!-- Icons -->
+  <link href="./static/assets/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="./static/assets/css/nucleo-svg.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../static/assets/css/material-dashboard.min.css">
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="./static/assets/css/material-dashboard.css">
+  <style>.copyleft {display:inline-block; transform: rotate(180deg);}</style>
+    <style>.copyleft {display:inline-block; transform: rotate(180deg);}</style>
+</head>
+{% block content %}
+<body class="g-sidenav-show  bg-gray-100 ">
+  <div class="main-content" class="dark-version">
+    <!-- Navbar -->
+    <nav class="g-sidenav-show navbar-nav  justify-content-end" id="navbar-main">
+      <div class="container-fluid" >
+        <!-- Brand -->
+        <span class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"><a href="/" class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">Content Based Image Retrival</a></span>
+        <div class="nav-item d-flex align-items-center">
+          <div class="nav-item d-flex align-items-center">
+            <a href="#" class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">Actualizar Dataset</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+    <!-- Header -->
+    <div class="header bg-gradient-primary pb-8 pt-5 ">
+      <div class="container-fluid">
+        <div class="header-body">
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid mt--7">
+      <div class="row">
+        <!-- pick picture -->
+        <div class="col-xl-4">
+          <div class="card shadow">
+            <div class="card-header bg-transparent">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h6 class="text-uppercase text-muted ls-1 mb-1"><i class="ni ni-folder-17"></i> Cargar Imagen</h6>
+                  <h2 class="mb-1">
+                    {% if page_status == 2 %}
+                      Elige
+                    {% else %}
+                      LA IMAGEN
+                    {% endif %}
+                    </h2>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="box-body">
+                <div class="form-group">
+                  <form action="/search" method="post" enctype="multipart/form-data">
+                  <div class="text-center">
+                    {% if page_status == 2 %}
+                      <input type="file" required name="image" accept="image/*" class="btn btn-outline-primary btn-sm mb-0 me-3">
+                      <button type="submit" class="btn btn-primary my-4" value="Submit"><i class="ni ni-send"></i>Enviar Imagen</button>
+                      <button type="reset"  class="btn btn-danger my-4" value="Reset"><i class="ni ni-fat-remove"></i>Reset</button>
+                    {% else %}
+                    {% for turget in target %}
+                    <div class="row">
+                      <div class="col-xl-12">
+                        <img class="img-fluid" src="static/tmp/{{turget}}">
+                    </div>
+                    </div>
+                    {% endfor %}
+                      <a href="/" class="btn btn-primary my-4"><i class="ni ni-button-power"></i> Find Again</a>
+                    {% endif %}
+                </div>
+                </form>
+                </div>
+              </div>
+            </form>
+            </div>
+          </div><br>
+          <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Curent Datasets</h5>
+                      <span class="font-weight-bold mb-1">{{ count }} Images</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolut">
+                        <i class="material-icons opacity-10">leaderboard</i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br>
+              {% if page_status == 1 %}
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Best Result</h5>
+                      <span class="font-weight-bold mb-1">{{ nearest[-0:-6] }}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolut">
+                        <i class="material-icons opacity-10">check_circle_outline</i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br>
+              {% endif %}
+        </div>
+
+        <!--end of pick picture -->
+
+        <div class="col-xl-8 mb-5 mb-xl-0">
+          <div class="card bg-gradient-default shadow">
+            <div class="card-header bg-transparent">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h6 class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5"><i class="ni ni-tv-2"></i> Result</h6>
+                  <h2 class="breadcrum mb-0">Search Result</h2>
+                </div>
+              </div>
+            </div>
+            <div class="card-body" {% if page_status == 2 %} style="height: 350px" {% endif %}>
+                {% if page_status == 2 %}
+                  <p class="breadcrum">No hay <b>resultados</b><b> Realice una busqueda</b> <i class="ni ni-user-run"></i>
+                {% else %}
+                <div class="table-responsive">
+                <table class="table align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      <th scope="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No.</th>
+                      <th scope="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Imagen</th>
+                      <th scope="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Puntuaje</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% set count = namespace(value=1) %}
+                      {% for image_name in image_names %}
+                        <tr>
+                          <td>{{ count.value }}</td>
+                          {% set count.value = count.value + 1 %}
+                          <td><img class="img-fluid shadow border-radius-xl" src="static/temp/{{image_name}}"></td>
+                          <td>{{image_name[-0:-6]}}</td>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+        </div>
+        {% endblock content %}
+      </div>
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="row align-items-center justify-content-xl-between">
+          <div class="col-xl-6">
+            <div class="copyright text-center text-xl-left text-muted">
+              &copy; 2018 <a href="https://www.creative-tim.com" class="font-weight-bold ml-1" target="_blank">Creative Tim</a>
+            </div>
+          </div>
+          <div class="col-xl-6">
+            <ul class="nav nav-footer justify-content-center justify-content-xl-end">
+              <li class="nav-item">
+                <a href="https://github.com/ledleledle" class="nav-link" target="_blank"><span class="copyleft">&copy;</span> 2023 Copyright by <b>Arlex Galindez</b></a>
+              </li>
+              <li class="nav-item">
+                <a href="https://raw.githubusercontent.com/ledleledle/WebCBIR/master/LICENSE" class="nav-link" target="_blank">GNU License</a>
+              </li>
+              <li class="nav-item">
+                <a href="https://github.com/ledleledle/WebCBIR" class="nav-link" target="_blank">GitHub Repo</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>
